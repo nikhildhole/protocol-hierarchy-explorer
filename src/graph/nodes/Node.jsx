@@ -1,6 +1,7 @@
-export function SimpleNode({ x, y, label, onMouseDown }) {
+// Node.jsx
+export function SimpleNode({ x, y, label, onPointerDown }) {
   return (
-    <g onMouseDown={onMouseDown} style={{ cursor: "grab", userSelect: "none" }}>
+    <g onPointerDown={onPointerDown} style={{ cursor: "grab", userSelect: "none" }}>
       <circle cx={x} cy={y} r="4" fill="red" />
 
       <rect

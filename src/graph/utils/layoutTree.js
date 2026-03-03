@@ -1,3 +1,4 @@
+// layoutTree.js
 function buildTree(graph) {
   const childrenMap = {};
   const hasParent = new Set();

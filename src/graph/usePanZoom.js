@@ -19,12 +19,12 @@ export function usePanZoom() {
     setZoom(newZoom);
   }
 
-  function onMouseDown(e) {
+  function onPointerDown(e) {
     isDragging.current = true;
     last.current = { x: e.clientX, y: e.clientY };
   }
 
-  function onMouseMove(e) {
+  function onPointerMove(e) {
     if (!isDragging.current) return;
 
     const dx = e.clientX - last.current.x;
@@ -38,7 +38,7 @@ export function usePanZoom() {
     last.current = { x: e.clientX, y: e.clientY };
   }
 
-  function onMouseUp() {
+  function onPointerUp() {
     isDragging.current = false;
   }
 
@@ -49,10 +49,10 @@ export function usePanZoom() {
     setPan,
     handlers: {
       onWheel,
-      onMouseDown,
-      onMouseMove,
-      onMouseUp,
-      onMouseLeave: onMouseUp
+      onPointerDown,
+      onPointerMove,
+      onPointerUp,
+      onPointerLeave: onPointerUp
     }
   };
 }

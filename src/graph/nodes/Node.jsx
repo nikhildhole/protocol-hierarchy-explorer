@@ -1,6 +1,8 @@
 export function SimpleNode({ x, y, label }) {
   return (
     <>
+      <circle cx={x} cy={y} r="4" fill="red" />
+
       <rect
         x={x - 50}
         y={y - 25}
@@ -10,11 +12,12 @@ export function SimpleNode({ x, y, label }) {
         fill="#e3f2fd"
         stroke="#1976d2"
       />
+
       <text
         x={x}
         y={y}
-        textAnchor="middle"
-        dominantBaseline="middle"
+        text-anchor="middle"
+        dominant-baseline="middle"
         fontSize="14"
       >
         {label}

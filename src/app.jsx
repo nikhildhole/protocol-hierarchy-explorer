@@ -1,14 +1,6 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import { graph, registry } from "./data/protocols";
+import { GraphView } from "./graph/GraphView";
 
 export function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <h1>Protocol Hierarchy Explorer</h1>
-    </>
-  )
+  return <GraphView graph={graph} registry={registry} />;
 }

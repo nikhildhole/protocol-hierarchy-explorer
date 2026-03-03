@@ -10,7 +10,7 @@ export function usePanZoom() {
   function onWheel(e) {
     e.preventDefault();
 
-    const zoomSpeed = 0.001;
+    const zoomSpeed = 0.003;
     const newZoom = Math.min(
       3,
       Math.max(0.3, zoom - e.deltaY * zoomSpeed)
@@ -44,7 +44,9 @@ export function usePanZoom() {
 
   return {
     zoom,
+    setZoom,
     pan,
+    setPan,
     handlers: {
       onWheel,
       onMouseDown,

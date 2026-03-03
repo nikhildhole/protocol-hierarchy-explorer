@@ -1,6 +1,6 @@
-export function SimpleNode({ x, y, label }) {
+export function SimpleNode({ x, y, label, onMouseDown }) {
   return (
-    <>
+    <g onMouseDown={onMouseDown} style={{ cursor: "grab", userSelect: "none" }}>
       <circle cx={x} cy={y} r="4" fill="red" />
 
       <rect
@@ -19,9 +19,10 @@ export function SimpleNode({ x, y, label }) {
         text-anchor="middle"
         dominant-baseline="middle"
         fontSize="14"
+        style={{ userSelect: "none", pointerEvents: "none" }}
       >
         {label}
       </text>
-    </>
+    </g>
   );
 }

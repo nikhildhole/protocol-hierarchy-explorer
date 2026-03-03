@@ -1,12 +1,17 @@
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useRef, useState, useMemo } from "preact/hooks";
 import { usePanZoom } from "./usePanZoom";
 import layoutTree from "./utils/layoutTree";
 
 export function GraphView({ graph, registry }) {
   const { zoom, setZoom, pan, setPan, handlers } = usePanZoom();
   const init = useRef(false);
+  const dragNodeId = useRef(null);
+  const lastMousePos = useRef({ x: 0, y: 0 });
+  const [, forceRender] = useState({});
 
-  layoutTree(graph);
+  useMemo(() => {
+    layoutTree(graph);
+  }, [graph]);
 
   const nodesArray = Object.values(graph.nodes);
 
@@ -43,11 +48,51 @@ export function GraphView({ graph, registry }) {
     }
   }, [nodesArray]);
 
+  const onNodeMouseDown = (id, e) => {
+    e.stopPropagation();
+    dragNodeId.current = id;
+    lastMousePos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const customHandlers = {
+    ...handlers,
+    onMouseMove: (e) => {
+      if (dragNodeId.current) {
+        const dx = (e.clientX - lastMousePos.current.x) / zoom;
+        const dy = (e.clientY - lastMousePos.current.y) / zoom;
+        
+        graph.nodes[dragNodeId.current].x += dx;
+        graph.nodes[dragNodeId.current].y += dy;
+        
+        lastMousePos.current = { x: e.clientX, y: e.clientY };
+        forceRender({});
+      } else if (handlers.onMouseMove) {
+        handlers.onMouseMove(e);
+      }
+    },
+    onMouseUp: (e) => {
+      if (dragNodeId.current) {
+        dragNodeId.current = null;
+      }
+      if (handlers.onMouseUp) {
+        handlers.onMouseUp(e);
+      }
+    },
+    onMouseLeave: (e) => {
+      if (dragNodeId.current) {
+        dragNodeId.current = null;
+      }
+      if (handlers.onMouseLeave) {
+        handlers.onMouseLeave(e);
+      }
+    }
+  };
+
   return (
     <svg
       class="w-full h-full bg-white cursor-grab active:cursor-grabbing"
       viewBox="0 0 1200 800"
-      {...handlers}
+      {...customHandlers}
     >
       <g transform={`translate(${pan.x},${pan.y}) scale(${zoom})`}>
         
@@ -77,6 +122,7 @@ export function GraphView({ graph, registry }) {
               key={node.id}
               x={node.x}
               y={node.y}
+              onMouseDown={(e) => onNodeMouseDown(node.id, e)}
               {...node}
             />
           );

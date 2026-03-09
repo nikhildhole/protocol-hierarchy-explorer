@@ -14,23 +14,28 @@ IP
 
 This library provides:
 
-* Tree layout engine
-* SVG rendering
-* Pan & zoom interaction
-* Node/Edge registry system
-* Extensible architecture
+- Tree layout engine
+- SVG rendering
+- Pan & zoom interaction
+- Node/Edge registry system
+- Extensible architecture
+
+## 🔗 Live Demo
+
+Explore the interactive protocol hierarchy here:  
+**[nikhildhole.github.io/protocol-hierarchy-explorer/](https://nikhildhole.github.io/protocol-hierarchy-explorer/)**
 
 ---
 
 # ✨ Features
 
-* Strict tree hierarchy layout
-* Auto-centering on initial load
-* Smooth zoom (mouse wheel)
-* Drag to pan
-* Registry-based node and edge types
-* Clean separation of concerns
-* Easily extensible
+- Strict tree hierarchy layout
+- Auto-centering on initial load
+- Smooth zoom (mouse wheel)
+- Drag to pan
+- Registry-based node and edge types
+- Clean separation of concerns
+- Easily extensible
 
 ---
 
@@ -42,9 +47,9 @@ The system is separated into four independent layers:
 
 Responsible only for storing:
 
-* Nodes
-* Edges
-* Node metadata
+- Nodes
+- Edges
+- Node metadata
 
 No UI knowledge.
 
@@ -68,10 +73,10 @@ Allows dynamic extension without modifying existing state.
 
 `layoutTree(graph)`
 
-* Detects root node
-* Builds parent → children map
-* Positions leaves evenly
-* Centers parents between children
+- Detects root node
+- Builds parent → children map
+- Positions leaves evenly
+- Centers parents between children
 
 Strict tree only (no cycles supported).
 
@@ -79,10 +84,10 @@ Strict tree only (no cycles supported).
 
 ### 4. Renderer (GraphView)
 
-* Renders SVG
-* Applies pan + zoom transform
-* Renders edges first
-* Renders nodes second
+- Renders SVG
+- Applies pan + zoom transform
+- Renders edges first
+- Renders nodes second
 
 ---
 
@@ -90,13 +95,13 @@ Strict tree only (no cycles supported).
 
 ### Zoom
 
-* Mouse wheel
-* Range: 0.3x – 3x
+- Mouse wheel
+- Range: 0.3x – 3x
 
 ### Pan
 
-* Click + drag
-* Cursor changes automatically
+- Click + drag
+- Cursor changes automatically
 
 ---
 
@@ -111,10 +116,10 @@ Currently implemented:
 
 Future enhancements may include:
 
-* Collapsible nodes
-* Metadata nodes
-* Icon-based nodes
-* Interactive nodes
+- Collapsible nodes
+- Metadata nodes
+- Icon-based nodes
+- Interactive nodes
 
 ---
 
@@ -128,41 +133,41 @@ Currently implemented:
 
 Future possibilities:
 
-* Curved edges
-* Orthogonal edges
-* Directed edges
-* Animated edges
+- Curved edges
+- Orthogonal edges
+- Directed edges
+- Animated edges
 
 ---
 
 # ⚠️ Limitations
 
-* Only supports strict tree (no cycles)
-* Layout recalculates on mount only
-* No node dragging (yet)
-* No animation (yet)
+- Only supports strict tree (no cycles)
+- Layout recalculates on mount only
+- No node dragging (yet)
+- No animation (yet)
 
 ---
 
 # 🔮 Planned Enhancements
 
-* Zoom-to-cursor
-* Expand / collapse branches
-* Click to set current node
-* Highlight path to root
-* Animated layout transitions
-* Bounds-based centering
-* Performance optimizations
+- Zoom-to-cursor
+- Expand / collapse branches
+- Click to set current node
+- Highlight path to root
+- Animated layout transitions
+- Bounds-based centering
+- Performance optimizations
 
 ---
 
 # 🏗 Design Principles
 
-* Layout and rendering are separated
-* State is independent of components
-* Registry allows runtime extension
-* No external graph libraries used
-* SVG-based for clarity and scalability
+- Layout and rendering are separated
+- State is independent of components
+- Registry allows runtime extension
+- No external graph libraries used
+- SVG-based for clarity and scalability
 
 ---
 
@@ -176,8 +181,8 @@ Internal project / experimental library.
 
 This project serves as:
 
-* A protocol hierarchy visualizer
-* A learning exercise in graph engine design
+- A protocol hierarchy visualizer
+- A learning exercise in graph engine design
 
 ---
 

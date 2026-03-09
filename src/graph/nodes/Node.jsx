@@ -1,7 +1,30 @@
-// Node.jsx
-export function SimpleNode({ x, y, label, onPointerDown }) {
+import { useState, useRef, useEffect } from "react";
+
+export function SimpleNode({ x, y, label, info = "abcd", onPointerDown }) {
+  const nodeRef = useRef(null);
+
+  // Close when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      return
+    }
+
+    window.addEventListener("pointerdown", handleClickOutside);
+    return () => {
+      window.removeEventListener("pointerdown", handleClickOutside);
+    };
+  }, []);
+
+
   return (
-    <g onPointerDown={onPointerDown} style={{ cursor: "grab", userSelect: "none" }}>
+    <g
+      ref={nodeRef}
+      onPointerDown={(e) => {
+        e.stopPropagation(); // prevent outside handler
+        onPointerDown?.(e);
+      }}
+      style={{ cursor: "grab", userSelect: "none" }}
+    >
       <circle cx={x} cy={y} r="4" fill="red" />
 
       <rect
@@ -17,12 +40,12 @@ export function SimpleNode({ x, y, label, onPointerDown }) {
       <text
         x={x}
         y={y}
-        text-anchor="middle"
-        dominant-baseline="middle"
+        textAnchor="middle"
+        dominantBaseline="middle"
         fontSize="14"
         style={{ userSelect: "none", pointerEvents: "none" }}
       >
-        {label}
+        {String(label).split(" - ")[0]}
       </text>
     </g>
   );

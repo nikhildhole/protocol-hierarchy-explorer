@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useMemo } from "preact/hooks";
 import { usePanZoom } from "./usePanZoom";
 import layoutTree from "./utils/layoutTree";
+import features from "./data/features";
 
 export function GraphView({ graph, registry }) {
   const width = window.innerWidth;
@@ -12,6 +13,7 @@ export function GraphView({ graph, registry }) {
   const dragNodeId = useRef(null);
   const lastPointerPos = useRef({ x: 0, y: 0 });
   const [, forceRender] = useState({});
+  let [currentInfoNodeId, setcurrentInfoNodeId] = useState(null);
 
   useMemo(() => {
     layoutTree(graph);
@@ -57,9 +59,14 @@ export function GraphView({ graph, registry }) {
   }, [nodesArray]);
 
   const onNodePointerDown = (id, e) => {
-    e.stopPropagation();
-    dragNodeId.current = id;
-    lastPointerPos.current = { x: e.clientX, y: e.clientY };
+
+    setcurrentInfoNodeId(id);
+    if (features.dragableElement) {
+      e.stopPropagation();
+      dragNodeId.current = id;
+      lastPointerPos.current = { x: e.clientX, y: e.clientY };
+    }
+    return
   };
 
   const customHandlers = {
@@ -85,50 +92,63 @@ export function GraphView({ graph, registry }) {
     onPointerLeave: (e) => {
       dragNodeId.current = null;
       handlers.onPointerLeave?.(e);
-    }
+    },
   };
 
   return (
-    <svg
-      className="w-full h-full bg-white cursor-grab active:cursor-grabbing"
-      style={{ touchAction: "none" }}
-      viewBox={`0 0 ${width} ${height}`}
-      {...customHandlers}
-    >
-      <g transform={`translate(${pan.x},${pan.y}) scale(${zoom})`}>
-        
-        {/* Edges */}
-        {graph.edges.map((edge, i) => {
-          const source = graph.nodes[edge.source];
-          const target = graph.nodes[edge.target];
-          const EdgeComp = registry.getEdge(edge.type);
+    <>
+      <div className="relative w-full h-full">
+        <div className="w-full h-full">
+          <svg
+            className="w-full h-full bg-white cursor-grab active:cursor-grabbing"
+            style={{ touchAction: "none" }}
+            viewBox={`0 0 ${width} ${height}`}
+            {...customHandlers}
+          >
+            <g transform={`translate(${pan.x},${pan.y}) scale(${zoom})`}>
 
-          return (
-            <EdgeComp
-              key={i}
-              x1={source.x}
-              y1={source.y + 25}
-              x2={target.x}
-              y2={target.y - 25}
-            />
-          );
-        })}
+              {/* Edges */}
+              {graph.edges.map((edge, i) => {
+                const source = graph.nodes[edge.source];
+                const target = graph.nodes[edge.target];
+                const EdgeComp = registry.getEdge(edge.type);
 
-        {/* Nodes */}
-        {nodesArray.map(node => {
-          const NodeComp = registry.getNode(node.type);
+                return (
+                  <EdgeComp
+                    key={i}
+                    x1={source.x}
+                    y1={source.y + 25}
+                    x2={target.x}
+                    y2={target.y - 25}
+                  />
+                );
+              })}
 
-          return (
-            <NodeComp
-              key={node.id}
-              x={node.x}
-              y={node.y}
-              onPointerDown={(e) => onNodePointerDown(node.id, e)}
-              {...node}
-            />
-          );
-        })}
-      </g>
-    </svg>
+              {/* Nodes */}
+              {nodesArray.map(node => {
+                const NodeComp = registry.getNode(node.type);
+
+                return (
+                  <NodeComp
+                    key={node.id}
+                    x={node.x}
+                    y={node.y}
+                    onPointerDown={(e) => onNodePointerDown(node.id, e)}
+                    {...node}
+                  />
+                );
+              })}
+            </g>
+          </svg>
+        </div>
+        {
+          currentInfoNodeId && (
+            <div className="w-full h-full md:w-1/3 md:h-full absolute top-0 md:right-0 bg-black/40 text-white backdrop-blur-sm z-10 wrap overflow-auto">
+              {graph.nodes[currentInfoNodeId].description({ onClose: () => setcurrentInfoNodeId(null) }) || "No description available"}
+            </div>
+          )
+        }
+      </div>
+    </>
   );
 }

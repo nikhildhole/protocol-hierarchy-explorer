@@ -2,7 +2,7 @@ import { GraphStore } from "../graph/GraphStore";
 import { Registry } from "../graph/Registry";
 import { SimpleNode } from "../graph/nodes/Node";
 import { SimpleEdge } from "../graph/edges/Edge";
-import IPProtocol from "../components/protocol/IP";
+import IPProtocol from "../components/protocol/ip";
 import TCPProtocol from "../components/protocol/TCP";
 import UDPProtocol from "../components/protocol/UDP";
 import HTTPProtocol from "../components/protocol/HTTP";
